@@ -1,6 +1,7 @@
 package com.poi.excel.poi_excel.mapper;
 
 import com.poi.excel.poi_excel.entity.Product;
+import com.poi.excel.poi_excel.request.ProductDto;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.List;
  * @Date: 2019/9/10 16:50
  */
 public interface ProductMapper {
+
+    List<Product> queryDetail(ProductDto dto);
 
     int deleteByPrimaryKey(Integer id);
 

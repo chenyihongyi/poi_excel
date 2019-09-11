@@ -29,6 +29,7 @@
 		<lombok.version>1.16.10</lombok.version>
 		<commons-fileupload.version>1.3.1</commons-fileupload.version>
 		<common-lang.version>3.8</common-lang.version>
+		<hibernate-validator-version>5.2.4.Final</hibernate-validator-version>
 	</properties>
 
 	<dependencies>
@@ -67,7 +68,12 @@
 			<artifactId>jstl</artifactId>
 		</dependency>
 
-
+		<!--hibernate注解-->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator-version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -91,6 +97,11 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
 		<!--lombok-->

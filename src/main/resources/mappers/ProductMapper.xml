@@ -158,6 +158,10 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <select id="queryDetail" resultType="com.poi.excel.poi_excel.entity.Product">
+      SELECT id,`name`,product_no,create_time,update_time FROM product
+    </select>
+
     <select id="selectAll" resultType="com.poi.excel.poi_excel.entity.Product">
         SELECT
         <include refid="Base_Column_List"/>
