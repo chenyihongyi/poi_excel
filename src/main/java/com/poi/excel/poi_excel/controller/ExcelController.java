@@ -120,4 +120,25 @@ public class ExcelController {
         return response;
     }
 
+    /**
+     * 导出excel模板
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = prefix+"/product/export/template", method = RequestMethod.GET)
+    public @ResponseBody
+    String exportTemplate(HttpServletResponse response) {
+        final String[] headers = new String[]{
+                "名称", "单位", "单价", "库存量", "备注", "采购日期"
+        };
+        try {
+            Workbook workbook = PoiUtil.fillExcelSheetData(null, headers, env.getProperty("poi.product.excel.file.name"));
+
+            PoiUtil.downloadExcel(response, workbook, env.getProperty("poi.product.excel.file.name"));
+            return env.getProperty("poi.product.excel.file.name");
+        } catch (Exception e) {
+            log.error("导出excel模板异常,{}",e.getMessage());
+        }
+        return null;
+    }
 }
