@@ -91,7 +91,7 @@ public class ExcelController {
      * @param request
      * @return
      */
-    @RequestMapping(value = prefix+"/excel/upload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @RequestMapping(value = prefix+"/product/upload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public BaseResponse uploadExcel(MultipartHttpServletRequest request){
         BaseResponse response = new BaseResponse(StatusCode.Success);
@@ -103,9 +103,16 @@ public class ExcelController {
             //根据上传的excel文件构造workbook实例，注意区分xls与xlsx版本对应的实例
             Workbook workbook = PoiUtil.getWorkbook(file, suffix);
             //读取上传上来的excel的数据到list<Product>中
-        }
+            List<Product> products = PoiUtil.readExcelData(workbook);
+            log.debug("读取excel得到 的数据,{}", products);
             //插入数据到数据库
-
+      /*      for (Product p : products) {
+                productMapper.insertSelective(p);
+            }*/
+            productMapper.insertBatch(products);
+        } else {
+            return new BaseResponse(StatusCode.Invalid_Params);
+        }
         } catch (Exception e) {
             log.error("上传excel导入数据 发生异常:", e.fillInStackTrace());
             return new BaseResponse(StatusCode.Fail);

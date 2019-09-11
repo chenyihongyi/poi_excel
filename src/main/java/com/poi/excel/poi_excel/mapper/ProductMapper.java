@@ -25,4 +25,6 @@ public interface ProductMapper {
     int updateByPrimaryKey(Product record);
 
     List<Product> selectAll(@Param("name") String name);
+
+    int insertBatch(List<Product> products);
 }

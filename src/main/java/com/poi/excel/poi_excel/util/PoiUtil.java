@@ -1,5 +1,7 @@
 package com.poi.excel.poi_excel.util;
 
+import com.google.common.base.Strings;
+import com.poi.excel.poi_excel.entity.Product;
 import com.poi.excel.poi_excel.enums.WorkBookVersion;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +96,52 @@ public class PoiUtil {
             }
         }
         return workbook;
+    }
+
+    /**
+     * 读取excel数据
+     * @param workbook
+     * @return
+     * @throws Exception
+     */
+    public static List<Product> readExcelData(Workbook workbook) throws Exception {
+        Product product;
+        List<Product> products = new ArrayList<Product>();
+        Row row;
+        int numSheet = workbook.getNumberOfSheets();
+        if (numSheet > 0) {
+            for (int i = 0; i < numSheet; i++) {
+                Sheet sheet = workbook.getSheetAt(i);
+                int numRow = sheet.getLastRowNum();
+                if (numRow > 0) {
+                    for (int j = 1; j <=numRow; j++) {
+                    //跳过excel sheet表格头部
+                        row= sheet.getRow(j);
+                        product=new Product();
+
+                        String name = ExcelUtil.manageCell(row.getCell(0), null);
+                        String unit = ExcelUtil.manageCell(row.getCell(1), null);
+                        Double price = Double.valueOf(ExcelUtil.manageCell(row.getCell(2), null));
+                        String stock = ExcelUtil.manageCell(row.getCell(3), null);
+                        String remark = ExcelUtil.manageCell(row.getCell(4), null);
+
+                        product.setName(name);
+                        product.setUnit(unit);
+                        product.setPrice(price);
+                        product.setStock((!Strings.isNullOrEmpty(stock)&& stock.contains("."))?
+                                Integer.valueOf(stock.substring(0,stock.lastIndexOf("."))):Integer.valueOf(stock));
+
+                        String value = ExcelUtil.manageCell(row.getCell(5), "yyyy-MM-dd");
+                        product.setPurchaseDate(simpleDateFormat.parse(value));
+                        product.setRemark(remark);
+
+                        products.add(product);
+                    }
+                }
+            }
+        }
+        log.info("获取数据列表:{}", products);
+        return products;
     }
 
     /**
