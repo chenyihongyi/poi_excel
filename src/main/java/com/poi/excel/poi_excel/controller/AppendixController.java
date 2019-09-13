@@ -3,8 +3,10 @@ package com.poi.excel.poi_excel.controller;
 import com.google.common.base.Strings;
 import com.poi.excel.poi_excel.dto.AppendixDto;
 import com.poi.excel.poi_excel.entity.Appendix;
+import com.poi.excel.poi_excel.entity.OrderRecord;
 import com.poi.excel.poi_excel.enums.StatusCode;
 import com.poi.excel.poi_excel.mapper.AppendixMapper;
+import com.poi.excel.poi_excel.mapper.OrderRecordMapper;
 import com.poi.excel.poi_excel.request.AppendixReuest;
 import com.poi.excel.poi_excel.response.BaseResponse;
 import com.poi.excel.poi_excel.service.AppendixService;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +47,9 @@ public class AppendixController {
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private OrderRecordMapper orderRecordMapper;
 
     /**
      * 上传附件
@@ -134,17 +140,31 @@ public class AppendixController {
         }
         try {
             Appendix appendix = appendixMapper.selectByPrimaryKey(id);
-            // todo 上传文件服务实战三27.16
             if (appendix != null) {
                 String fileLocation = env.getProperty("file.upload.root.url") + appendix.getLocation();
                 GeneralOperationUtil.downnloadFile(response, new FileInputStream(fileLocation), appendix.getName());
                 return appendix.getName();
             }
-
         } catch (Exception e) {
             log.error("下载附件失败,{}", e.getMessage());
         }
         return null;
+    }
+
+    /**
+     *将订单信息以及拥有的附件列表返回给前端
+     * @param id
+     * @param modelMap
+     * @return
+     */
+    @RequestMapping(value = prefix+"/detail/appendix/list/{id}", method = RequestMethod.GET)
+    public String recordDetailAppedix(@PathVariable Integer id, ModelMap modelMap){
+        OrderRecord record = orderRecordMapper.selectByPrimaryKey(id);
+        modelMap.addAttribute("record", record);
+
+
+
+        return "orderRecord";
     }
 
 
