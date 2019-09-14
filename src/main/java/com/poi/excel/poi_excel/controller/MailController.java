@@ -1,6 +1,7 @@
 package com.poi.excel.poi_excel.controller;
 
 import com.google.common.collect.Maps;
+import com.poi.excel.poi_excel.entity.Appendix;
 import com.poi.excel.poi_excel.enums.StatusCode;
 import com.poi.excel.poi_excel.request.MailRequest;
 import com.poi.excel.poi_excel.response.BaseResponse;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -82,7 +84,7 @@ public class MailController {
             }
             log.info("发送带附件邮件：{} ",mailRequest);
 
-            mailService.sendAttachmentMail(mailRequest.getSubject(),mailRequest.getContent(), StringUtils.split(mailRequest.getMailTos(),","));
+            //mailService.sendAttachmentMail(mailRequest.getSubject(),mailRequest.getContent(), StringUtils.split(mailRequest.getMailTos(),","));
         }catch (Exception e){
             response=new BaseResponse(StatusCode.Fail.getCode(),e.getMessage());
             log.error("发送带附件邮件失败:{}", e.getMessage());

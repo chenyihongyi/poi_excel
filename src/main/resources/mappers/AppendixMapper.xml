@@ -158,4 +158,12 @@
             sort_by = #{sortBy,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <select id="selectModuleAppendix" resultType="com.poi.excel.poi_excel.entity.Appendix">
+        select
+        <include refid="Base_Column_List"/>
+        from appendix where is_delete=0
+        and module_type=#{moduleType} and record_id = #{recordId};
+
+    </select>
 </mapper>

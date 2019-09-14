@@ -5,9 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @MapperScan(basePackages = "com.poi.excel.poi_excel.mapper")
 @SpringBootApplication
+@EnableScheduling
 public class PoiExcelApplication extends SpringBootServletInitializer {
 
 

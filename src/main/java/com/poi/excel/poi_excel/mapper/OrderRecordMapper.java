@@ -1,6 +1,10 @@
 package com.poi.excel.poi_excel.mapper;
 
+import com.poi.excel.poi_excel.entity.Appendix;
 import com.poi.excel.poi_excel.entity.OrderRecord;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @Author: Elvis
@@ -20,4 +24,6 @@ public interface OrderRecordMapper {
     int updateByPrimaryKeySelective(OrderRecord record);
 
     int updateByPrimaryKey(OrderRecord record);
+
+
 }

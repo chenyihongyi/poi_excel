@@ -1,5 +1,6 @@
 package com.poi.excel.poi_excel.service;
 
+import com.poi.excel.poi_excel.entity.Appendix;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import javax.mail.internet.MimeMessage;
 import javax.security.auth.login.AppConfigurationEntry;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,7 +57,7 @@ public class MailService {
        log.info("发送简单文本邮件成功--->");
     }
 
-    public void sendAttachmentMail(final String subject,final String content,final String[] tos) throws Exception{
+    public void sendAttachmentMail(final String subject, final String content, final String[] tos, final List<Appendix> appendixList) throws Exception{
         MimeMessage mimeMessage=mailSender.createMimeMessage();
         MimeMessageHelper messageHelper=new MimeMessageHelper(mimeMessage,true,"utf-8");
         messageHelper.setFrom(env.getProperty("mail.send.from"));

@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
+import java.util.List;
 
 /**
  * @Author: Elvis
@@ -50,6 +51,7 @@ public class AppendixController {
 
     @Autowired
     private OrderRecordMapper orderRecordMapper;
+
 
     /**
      * 上传附件
@@ -157,12 +159,14 @@ public class AppendixController {
      * @param modelMap
      * @return
      */
-    @RequestMapping(value = prefix+"/detail/appendix/list/{id}", method = RequestMethod.GET)
-    public String recordDetailAppedix(@PathVariable Integer id, ModelMap modelMap){
+    @RequestMapping(value = prefix + "/detail/appendix/list/{id}", method = RequestMethod.GET)
+    public String recordDetailAppedix(@PathVariable Integer id, ModelMap modelMap) {
+
         OrderRecord record = orderRecordMapper.selectByPrimaryKey(id);
         modelMap.addAttribute("record", record);
 
-
+        List<Appendix> appendixList = appendixMapper.selectModuleAppendix("orderRecord", id);
+        modelMap.addAttribute("appendixList", appendixList);
 
         return "orderRecord";
     }
